@@ -1,56 +1,69 @@
 #include "card_number.h"
+#include <stdio.h>
 
-FIRST_Part_Vehicle_NumberDef g_FirstTwoVehicleNumberList[VEHICLE_CARD_NUMBER] =
+FIRST_Part_Vehicle_NumberDef g_FirstTwoVehicleNumberList[FIRST_PART_VEHICLE_NUMBER] =
 {
-	{0x4EAC,1,0x0001,0x000040F7},/*¾©*/
-	{0x6D25,1,0x000c,0x00000017},/*½ò*/
-	{0x5180,1,0x0014,0x000A02FF},/*¼½*/
-	{0x664B,1,0x0021,0x00001EBF},/*½ú*/
-	{0x8499,1,0x002E,0x00001EFF},/*ÃÉ*/
-	{0x8FBD,1,0x003C,0x0020BEFF},/*ÁÉ*/
-	{0x5409,1,0x004C,0x000002FF},/*¼ª*/
-	{0x9ED1,1,0x0058,0x0002BEFF},/*ºÚ*/
-	{0x6CAA,1,0x0068,0x000000FF},/*»¦*/
-	{0x82CF,1,0x0070,0x00003EFF},/*ËÕ*/
-	{0x6D59,1,0x007F,0x00000EFF},/*Õã*/
-	{0x7696,1,0x008C,0x0007BEFF},/*Íî*/
-	{0x95FD,1,0x009E,0x000006FF},/*Ãö*/
-	{0x8D63,1,0x00AA,0x00001EFF},/*¸Ó*/
-	{0x9C81,1,0x00B8,0x0037BEFF},/*Â³*/
-	{0x8C6B,1,0x00CC,0x0017BEFF},/*Ô¥*/
-	{0x9102,1,0x00DF,0x0007BEFF},/*¶õ*/
-	{0x6E58,1,0x00F1,0x00103EFF},/*Ïæ*/
-	{0x7CA4,1,0x0101,0x03FFBEFF},/*ÔÁ*/
-	{0x6842,1,0x011A,0x0002BEFF},/*¹ğ*/
-	{0x743C,1,0x012A,0x0000001F},/*Çí*/
-	{0x6E1D,1,0x0132,0x000000A7},/*Óå*/
-	{0x5DDD,1,0x013B,0x03FF2EBF},/*´¨*/
-	{0x8D35,1,0x0150,0x000002FF},/*¹ó*/
-	{0x4E91,1,0x015C,0x0007BEFF},/*ÔÆ*/
-	{0x85CF,1,0x016E,0x000002FF},/*²Ø*/
-	{0x9655,1,0x017A,0x003006FF},/*ÉÂ*/
-	{0x7518,1,0x0188,0x0000BEFF},/*¸Ê*/
-	{0x9752,1,0x0198,0x000000FF},/*Çà*/
-	{0x5B81,1,0x01A3,0x0000000F},/*Äş*/
-	{0x65B0,1,0x01AB,0x0003BEFF},/*ĞÂ*/
-	{0x574A,2,0x024E,0xFFFFFFFF},/*Îä¾¯ ×¢£ºÈ«F±íÊ¾´Ó01-32*/
+	{0x4EAC,1,0x0001,0x000040F7},/*äº¬*/
+	{0x6D25,1,0x000c,0x00000017},/*æ´¥*/
+	{0x5180,1,0x0014,0x000A02FF},/*å†€*/
+	{0x664B,1,0x0021,0x00001EBF},/*æ™‹*/
+	{0x8499,1,0x002E,0x00001EFF},/*è’™*/
+	{0x8FBD,1,0x003C,0x0020BEFF},/*è¾½*/
+	{0x5409,1,0x004C,0x000002FF},/*å‰*/
+	{0x9ED1,1,0x0058,0x0002BEFF},/*é»‘*/
+	{0x6CAA,1,0x0068,0x000000FF},/*æ²ª*/
+	{0x82CF,1,0x0070,0x00003EFF},/*è‹*/
+	{0x6D59,1,0x007F,0x00000EFF},/*æµ™*/
+	{0x7696,1,0x008C,0x0007BEFF},/*çš–*/
+	{0x95FD,1,0x009E,0x000006FF},/*é—½*/
+	{0x8D63,1,0x00AA,0x00001EFF},/*èµ£*/
+	{0x9C81,1,0x00B8,0x0037BEFF},/*é²*/
+	{0x8C6B,1,0x00CC,0x0017BEFF},/*è±«*/
+	{0x9102,1,0x00DF,0x0007BEFF},/*é„‚*/
+	{0x6E58,1,0x00F1,0x00103EFF},/*æ¹˜*/
+	{0x7CA4,1,0x0101,0x03FFBEFF},/*ç²¤*/
+	{0x6842,1,0x011A,0x0002BEFF},/*æ¡‚*/
+	{0x743C,1,0x012A,0x0000001F},/*ç¼*/
+	{0x6E1D,1,0x0132,0x000000A7},/*æ¸*/
+	{0x5DDD,1,0x013B,0x03FF2EBF},/*å·*/
+	{0x8D35,1,0x0150,0x000002FF},/*è´µ*/
+	{0x4E91,1,0x015C,0x0007BEFF},/*äº‘*/
+	{0x85CF,1,0x016E,0x000002FF},/*è—*/
+	{0x9655,1,0x017A,0x003006FF},/*é™•*/
+	{0x7518,1,0x0188,0x0000BEFF},/*ç”˜*/
+	{0x9752,1,0x0198,0x000000FF},/*é’*/
+	{0x5B81,1,0x01A3,0x0000000F},/*å®*/
+	{0x65B0,1,0x01AB,0x0003BEFF},/*æ–°*/
+	{0x574A,2,0x024E,0xFFFFFFFF},/*æ­¦è­¦ æ³¨ï¼šå…¨Fè¡¨ç¤ºä»01-32*/
 
-	/*---------ÈôÉÏÊö±íÖĞÎ´ÕÒµ½£¬ÔòÖØĞÂÈ¡¸ß2Î»¼ÌĞø²éÑ¯------------*/
-	{0x0056,1,0x01C4,0x002A547F},/*¾ü*/
-	{0x004B,1,0x01D3,0x02127EFF},/*¿Õ*/
-	{0x0048,1,0x01E5,0x0002487F},/*º£*/
-	{0x0042,1,0x01F1,0x0122740F},/*±±*/
-	{0x0053,1,0x01FE,0x0122740F},/*Éò*/
-	{0x004C,1,0x020B,0x0122740F},/*À¼*/
-	{0x004A,1,0x0218,0x0122740F},/*¼Ã*/
-	{0x004E,1,0x0125,0x0122740F},/*ÄÏ*/
-	{0x0047,1,0x0232,0x0122740F},/*¹ã*/
-	{0x0043,1,0x0241,0x0122740F}/*³É*/
+	/*---------è‹¥ä¸Šè¿°è¡¨ä¸­æœªæ‰¾åˆ°ï¼Œåˆ™é‡æ–°å–é«˜2ä½ç»§ç»­æŸ¥è¯¢------------*/
+	{0x0056,1,0x01C4,0x002A547F},/*å†›*/
+	{0x004B,1,0x01D3,0x02127EFF},/*ç©º*/
+	{0x0048,1,0x01E5,0x0002487F},/*æµ·*/
+	{0x0042,1,0x01F1,0x0122740F},/*åŒ—*/
+	{0x0053,1,0x01FE,0x0122740F},/*æ²ˆ*/
+	{0x004C,1,0x020B,0x0122740F},/*å…°*/
+	{0x004A,1,0x0218,0x0122740F},/*æµ*/
+	{0x004E,1,0x0125,0x0122740F},/*å—*/
+	{0x0047,1,0x0232,0x0122740F},/*å¹¿*/
+	{0x0043,1,0x0241,0x0122740F}/*æˆ*/
 };
 
+SECOND_Part_Vehicl_NumberDef g_SecondFiveVehicleNumberList[SECOND_PART_VEHICLE_NUMBER] = {
+	{0x6D,0x88},
+	{0x8F,0xB9},
+	{0x90,0x1A},
+	{0x68,0xEE},
+	{0x91,0xD1},
+	{0x8B,0x66},
+	{0x75,0x35}
+};
+
+unsigned int AlphaBeltaMask = 0x03FFBEFF;
+
 unsigned char g_Vehicle_Number_List_WJN[10] = {0x57,0x4A,0x31,0x34,0x31,0x32,0x33,0x30,0x45};//WJ141230E
-unsigned char g_Vehicle_Number_List_Normal[10] = {0x8F,0xBD,0x45,0x31,0x32,0x33,0x30,0x45};//ÁÉE1230E
-unsigned char g_Vehicle_Number_List_Force[10] = {0x53,0x4D,0x31,0x32,0x33,0x30,0x45};//ÉòM1230E
+unsigned char g_Vehicle_Number_List_Normal[10] = {0x8F,0xBD,0x45,0x31,0x32,0x33,0x30,0x45};//è¾½E1230E
+unsigned char g_Vehicle_Number_List_Force[10] = {0x53,0x4D,0x31,0x32,0x33,0x30,0x45};//æ²ˆM1230E
 unsigned char g_Vehicle_Number_List_WJF[10] = {0x57,0x4A,0x31,0x34,0x68,0xEE,0x32,0x33,0x30,0x45};//WJ141230E
 
 FIRST_Part_Vehicle_NumberDef *getVehicleNumHead(void)
@@ -58,24 +71,33 @@ FIRST_Part_Vehicle_NumberDef *getVehicleNumHead(void)
 	return &g_FirstTwoVehicleNumberList[0];
 }
 
+SECOND_Part_Vehicl_NumberDef *getSecondVehicleNumHead(void){
+	return &g_SecondFiveVehicleNumberList[0];
+}
+
+void Debug_Print(unsigned char debug,unsigned int print){
+	if(debug == 1)
+		printf("\r\nprint is %d",print);
+}
+
 unsigned char *getVehicle_Number_List_WJN(void)
 {
-	return &g_Vehicle_Number_List_WJN[0];
+	return &g_Vehicle_Number_List_WJF[0];
 }
 
 /*
- *author 			Èîºş¸Ú
- *description ÅĞ¶ÏÊäÈëµÄÍ·Á½Î»AsciiÊÇ·ñÔÚÁĞ±íÖĞ
- *param 			ÊäÈë2¸ö×Ö½ÚµÄÊı¾İ
- *output 			ÔÚÁĞ±íÖĞµÄÎ»ÖÃ
- *return 			ÊÇ·ñ´æÔÚÁĞ±íÖĞ
+ *author 			ruanhugang
+ *description 		åˆ¤æ–­è¾“å…¥çš„å¤´ä¸¤ä½Asciiæ˜¯å¦åœ¨åˆ—è¡¨ä¸­
+ *param 			è¾“å…¥2ä¸ªå­—èŠ‚çš„æ•°æ®
+ *output 			åœ¨åˆ—è¡¨ä¸­çš„ä½ç½®
+ *return 			æ˜¯å¦å­˜åœ¨åˆ—è¡¨ä¸­
  */
-unsigned char CheckIfInVehicleNumberList(unsigned int headData,unsigned char *position)
+unsigned char CheckIfInFisrtPartVehicleNumberList(unsigned int headData,unsigned char *position)
 {
 	unsigned char _in = 0;
 	FIRST_Part_Vehicle_NumberDef *temp = getVehicleNumHead();
 	int i = 0;
-	for(; i<32; i++) /*Ç°32µÄ³µÅÆ¶¼ÊÇ¿ÉÒÔÓÃÁ½¸ö×Ö½Ú½øĞĞÅĞ¶Ï*/
+	for(; i<32; i++) /*å‰32çš„è½¦ç‰Œéƒ½æ˜¯å¯ä»¥ç”¨ä¸¤ä¸ªå­—èŠ‚è¿›è¡Œåˆ¤æ–­*/
 	{
 		if(headData == temp->first_Ascii)
 		{
@@ -88,7 +110,7 @@ unsigned char CheckIfInVehicleNumberList(unsigned int headData,unsigned char *po
 	if(_in==0)
 	{
 		unsigned int convertData = (headData>>8)&0x00FF;
-		for(; i<VEHICLE_CARD_NUMBER; i++) /*´¦Àí32ÒÔºóµÄ³µÅÆ£¬Ö»ÒªÒ»¸ö×Ö½Ú¼´¿É*/
+		for(; i<FIRST_PART_VEHICLE_NUMBER; i++) /*å¤„ç†32ä»¥åçš„è½¦ç‰Œï¼Œåªè¦ä¸€ä¸ªå­—èŠ‚å³å¯*/
 		{
 			if(convertData == temp->first_Ascii)
 			{
@@ -102,7 +124,25 @@ unsigned char CheckIfInVehicleNumberList(unsigned int headData,unsigned char *po
 	return _in;
 }
 
-unsigned char getsecondPartAsciiRealPositionInList(unsigned int mask,unsigned short int ascii)
+unsigned char getPositionInSecondPartVehicleNumberList(unsigned char input,unsigned char *position){
+	unsigned char _in = 0;
+	char i = 0;
+	SECOND_Part_Vehicl_NumberDef *temp = getSecondVehicleNumHead();
+	for(;i<SECOND_PART_VEHICLE_NUMBER;i++){
+		if(input == temp->first_Ascii){
+			_in = 1;
+			*position = i;
+			break;
+		}
+		temp++;
+	}
+	if(i == SECOND_PART_VEHICLE_NUMBER){
+		
+	}
+	return _in;
+}
+
+unsigned char getRealPositionInAlphaBeltaList(unsigned int mask,unsigned short int ascii)
 {
 	unsigned char position = -1;
 	int i = 0;
@@ -119,7 +159,7 @@ unsigned char getsecondPartAsciiRealPositionInList(unsigned int mask,unsigned sh
 		}
 		mask>>=1;
 	}
-	if(i==len)//²»ÔÚ×ÓÁĞ±íÖĞ
+	if(i==len)//ä¸åœ¨å­åˆ—è¡¨ä¸­
 		return -1;
 	return position;
 }
@@ -132,16 +172,136 @@ unsigned short int uint8ToUint16(unsigned char data1,unsigned char data2)
 	assembData |= data2;
 	return assembData;
 }
+
 /*
  *author ruanhugang
- *description ½«AsciiÂë3132×ª³ÉÊ®½øÖÆ12£¬×¢Òâ¸ßÎ»Òª¼õ30£¬µÍÎ»Òª¼õÈ¥31
- *param H_Data ¸ßÎ»×Ö½Ú
- *param L_Data µÍÎ»×Ö½Ú
- *return ·µ»ØÊ®½øÖÆ½á¹û
+ *function combineAsciiToDec
+ *description å°†Asciiç 3132è½¬æˆåè¿›åˆ¶12ï¼Œæ³¨æ„é«˜ä½è¦å‡30ï¼Œä½ä½è¦å‡å»31
+ *param H_Data é«˜ä½å­—èŠ‚
+ *param L_Data ä½ä½å­—èŠ‚
+ *return è¿”å›åè¿›åˆ¶ç»“æœ
  */
 unsigned char combineAsciiToDec(unsigned char H_Data, unsigned char L_Data)
 {
 	return (H_Data-0x30)*10+(L_Data-0x31);
+}
+
+/*
+ *author ruanhugang
+ *function firstPartNumberOut
+ *description å°†è½¦ç‰Œçš„å‰ä¸¤ä½å­—ç¬¦ä¸²è½¬ç è¾“å‡ºï¼Œå®é™…åªéœ€è¦å–å10ä½ï¼Œèˆå¼ƒå‰6ä½ï¼Œç”¨ä¸€ä¸ªå­—èŠ‚å­˜å‚¨è¿”å›
+ *param input è¾“å…¥çš„æŒ‡é’ˆ
+ *param pointer è¾“å‡ºå¤„ç†åçš„æŒ‡é’ˆä½ç½®
+ *return è¿”å›å‰ä¸¤ä½çš„è¾“å‡ºAsciiï¼Œå¦‚æœæœªè¯†åˆ«è½¦ç‰Œï¼Œè¿”å›-1;
+ */
+unsigned short int firstPartNumberOut(unsigned char *input , unsigned char *pointer){
+	unsigned short int firstOutAscii = 0;
+	unsigned char position = -1;
+	unsigned int mask = -1;
+	unsigned int start = -1;
+	unsigned short int firstPartSecondAscii = 0;
+	unsigned short int firstTwoAscii = uint8ToUint16(*(input),*(input+1));
+	unsigned char isIn = CheckIfInFisrtPartVehicleNumberList(firstTwoAscii,&position);
+	FIRST_Part_Vehicle_NumberDef *numberList = getVehicleNumHead();
+	if(!isIn)
+	{
+		printf("å½“å‰è½¦ç‰Œæœªè¯†åˆ«");
+		return -1;
+	}
+	mask = (numberList+position)->character_mask;
+	start = (numberList+position)->out_start_Ascii;
+	if((numberList+position)->second_Ascii_len==1)
+	{
+		if(position>=32)	/*å†›ç”¨è½¦ç‰Œ*/
+		{
+			firstPartSecondAscii = firstTwoAscii & 0x00FF;	//ä½ä½å­—èŠ‚ä¸ºä¸‹ä¸€ä¸ªå­—èŠ‚
+			*pointer = 2;
+		}
+		else				/*æ°‘ç”¨è½¦ç‰Œ*/
+		{
+			firstPartSecondAscii = *(input+2);				//ç›´æ¥è¯»å–ä¸‹ä¸€ä¸ªå­—èŠ‚
+			*pointer = 3;
+		}
+		firstOutAscii= getRealPositionInAlphaBeltaList(mask,firstPartSecondAscii)+start;
+	}
+	else					/*æ­¦è­¦è½¦ç‰Œ*/
+	{
+		firstOutAscii = combineAsciiToDec(*(input + 2),*(input + 3))+start;
+		*pointer = 4;
+		
+	}
+	return firstOutAscii;
+}
+
+/*
+ *author ruanhugang
+ *function secondPartNumberOut
+ *description å°†è½¦ç‰Œçš„å5ä½å­—ç¬¦è½¬ç è¾“å‡ºï¼Œå®é™…æ¯ä¸ªå­—ç¬¦è¾“å‡ºçš„8ä½Asciiåªéœ€è¦å–å6ä½ï¼Œæ€»å…±30ä½ï¼Œç”¨4ä¸ªå­—èŠ‚å­˜å‚¨è¿”å›
+ *param input è¾“å…¥çš„æŒ‡é’ˆ
+ *return è¿”å›è½¦ç‰Œå5ä½å­—ç¬¦è½¬ç çš„Ascii;
+ */
+unsigned int secondPartNumberOut(unsigned char *input)
+{
+	unsigned char count = 0;
+	unsigned char position = 0;
+	unsigned int result=0;
+	while(count<5){
+		Debug_Print(0,*input);
+		if(*input >= 0x30 && *input <= 0x39){		//å­—ç¬¦ä¸ºæ•°å­—ç±»å‹ 0-9
+			result |= *input - 0x30;
+			input++;
+			count++;
+			if(count < 5){
+				result <<= 6;
+			}
+		}else
+		if(*input >= 0x41 && *input <= 0x5A){		//å­—ç¬¦ä¸ºå­—æ¯ç±»å‹ A-Z
+			result |= (getRealPositionInAlphaBeltaList(AlphaBeltaMask,*input)+0x0A);
+			input++;
+			count++;
+			if(count < 5){
+				result <<= 6;
+			}
+		}else
+		if(*input > 0x5A){							//å­—ç¬¦ä¸ºæ­¦è­¦ç‰¹æ®Šç±»å‹ æ¶ˆ/è¾¹/é€š/æ£®/é‡‘/è­¦/ç”µ
+			if(getPositionInSecondPartVehicleNumberList(*input,&position)==1){
+				result |= 0x22 + position;
+				input += 2;
+				count++;
+				if(count < 5){
+					result <<= 6;
+				}
+			}
+		}
+	}
+	Debug_Print(0,result);
+	return result;
+
+} 
+
+/*
+ *author ruanhugang
+ *function assembleAscii
+ *description å°†åˆ†æ•£çš„å­—èŠ‚åˆå¹¶ä¸ºå®Œæ•´çš„å­—èŠ‚
+ *param input1 è¾“å…¥çš„å­—èŠ‚1åœ°å€ï¼Œå¹¶æ•´ç†å®Œåè¾“å‡º
+ *param input2 è¾“å…¥çš„å­—èŠ‚2åœ°å€ï¼Œå¹¶æ•´ç†å®Œåè¾“å‡º
+ *param offset å­—èŠ‚è°ƒæ•´çš„bitæ•°
+ *return æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0
+ */
+unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset){
+	unsigned char firstFinalOut = 0;
+	unsigned int secondFinalOut = 0;
+
+	if(input1 == NULL||input2 ==NULL){
+		return 0;
+	}
+	
+	secondFinalOut = ((*input1 & (unsigned short int)(~(0xFFFF<<offset)))<<(32-offset)) | *input2;
+	firstFinalOut = (*input1 & 0xFFFC) >> offset;
+
+	*input1 = firstFinalOut;
+	*input2 = secondFinalOut;
+	return 1;
 }
 
 
