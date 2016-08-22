@@ -20,6 +20,7 @@ typedef struct
 	unsigned char second_Ascii;
 }SECOND_Part_Vehicl_NumberDef;
 
+
 //extern unsigned int AlphaBeltaMask;
 
 //FIRST_Part_Vehicle_NumberDef *getVehicleNumHead(void);
@@ -30,7 +31,7 @@ unsigned char *getVehicle_Number_List_WJN(void);
 //unsigned char CheckIfInFisrtPartVehicleNumberList(unsigned int headData,unsigned char *position);
 unsigned int secondPartNumberOut(unsigned char *input);
 unsigned short int firstPartNumberOut(unsigned char *input , unsigned char *pointer);
-unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset);
+unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset,unsigned char *out);
 
 //extern unsigned char g_Vehicle_Number_List_Normal[10];//辽E1230E
 //extern unsigned char g_Vehicle_Number_List_Force[10] ;//沈M1230E

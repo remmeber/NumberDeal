@@ -144,12 +144,12 @@ unsigned char getPositionInSecondPartVehicleNumberList(unsigned char input,unsig
 
 unsigned char getRealPositionInAlphaBeltaList(unsigned int mask,unsigned short int ascii)
 {
-	unsigned char position = -1;
+	unsigned char position = 0;
 	int i = 0;
 	unsigned char len = sizeof(mask)*8;
 	for(; i<len; i++)
 	{
-		if(mask&1==1)
+		if((mask&1)==1)
 		{
 			position++;
 		}
@@ -160,7 +160,7 @@ unsigned char getRealPositionInAlphaBeltaList(unsigned int mask,unsigned short i
 		mask>>=1;
 	}
 	if(i==len)//不在子列表中
-		return -1;
+		return 0;
 	return position;
 }
 
@@ -192,21 +192,21 @@ unsigned char combineAsciiToDec(unsigned char H_Data, unsigned char L_Data)
  *description 将车牌的前两位字符串转码输出，实际只需要取后10位，舍弃前6位，用一个字节存储返回
  *param input 输入的指针
  *param pointer 输出处理后的指针位置
- *return 返回前两位的输出Ascii，如果未识别车牌，返回-1;
+ *return 返回前两位的输出Ascii，如果未识别车牌，返回0;
  */
 unsigned short int firstPartNumberOut(unsigned char *input , unsigned char *pointer){
 	unsigned short int firstOutAscii = 0;
-	unsigned char position = -1;
-	unsigned int mask = -1;
-	unsigned int start = -1;
+	unsigned char position = 0;
+	unsigned int mask = 0;
+	unsigned int start = 0;
 	unsigned short int firstPartSecondAscii = 0;
 	unsigned short int firstTwoAscii = uint8ToUint16(*(input),*(input+1));
 	unsigned char isIn = CheckIfInFisrtPartVehicleNumberList(firstTwoAscii,&position);
 	FIRST_Part_Vehicle_NumberDef *numberList = getVehicleNumHead();
 	if(!isIn)
 	{
-		printf("当前车牌未识别");
-		return -1;
+		printf("invalid cartNumber");
+		return 0;
 	}
 	mask = (numberList+position)->character_mask;
 	start = (numberList+position)->out_start_Ascii;
@@ -282,13 +282,14 @@ unsigned int secondPartNumberOut(unsigned char *input)
 /*
  *author ruanhugang
  *function assembleAscii
- *description 将分散的字节合并为完整的字节
- *param input1 输入的字节1地址，并整理完后输出
- *param input2 输入的字节2地址，并整理完后输出
+ *description 将分散的字节合并为完整的字节输出
+ *param input1 输入的字节1地址(10bits)，并整理完后输出
+ *param input2 输入的字节2地址(30bits)，并整理完后输出
  *param offset 字节调整的bit数
+ *param out 转换输出的字节指针
  *return 成功返回1，失败返回0
  */
-unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset){
+unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset,unsigned char *out){
 	unsigned char firstFinalOut = 0;
 	unsigned int secondFinalOut = 0;
 
@@ -299,8 +300,11 @@ unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsi
 	secondFinalOut = ((*input1 & (unsigned short int)(~(0xFFFF<<offset)))<<(32-offset)) | *input2;
 	firstFinalOut = (*input1 & 0xFFFC) >> offset;
 
-	*input1 = firstFinalOut;
-	*input2 = secondFinalOut;
+	*(out++) = firstFinalOut;
+	*(out++) = secondFinalOut>>24;
+	*(out++) = secondFinalOut>>16;
+	*(out++) = secondFinalOut>>8;
+	*(out++) = secondFinalOut;
 	return 1;
 }
 
