@@ -43,6 +43,7 @@ typedef struct sWiegandConfig
 	unsigned char (*ReceiveData)(unsigned long long src_wg34,unsigned char *dir_ptr);
 }tWiegandConfig;
 
+
 enum
 {
 	WG_RX_MODE,

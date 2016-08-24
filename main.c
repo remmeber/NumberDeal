@@ -30,6 +30,8 @@
 #include "card_number.h"
 #include "wiegand.h"
 #include "global_var.h"
+#include "bsp_SysTick.h"
+#include "RS485.h"
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -44,18 +46,17 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-void UART_485_Configuration(void);
 void NVIC_Config(void);
 void EXIT_Configuration(void);
+void GPIO_Configuration(void);
+void RCC_Configuration(void);
 
-unsigned char *sendData = {0};
-unsigned char *recvData = {0};
+unsigned char *WG_SEND_DATA= NULL;
+unsigned char *WG_RCV_DATA = NULL;
+unsigned char *RS485_SEND_DATA = NULL;
+unsigned char *RS485_RCV_DATA = NULL;
 
-	void Delay(__IO uint32_t nCount);
-void Delay(__IO uint32_t nCount)
-{
-while(nCount--){}
-}
+void Delay(__IO uint32_t nCount);
 
 tWiegandConfig *WiegandUse = NULL; 
 /**
@@ -75,7 +76,10 @@ int main(void)
   /* Add your application code here
      */
  
-  UART_485_Configuration();
+	
+	//滴答定时器初始化，在韦根接收的时候使用
+	SysTick_Init();
+	
 	
 	WiegandUse = WiegandInit();
 	//wiegand config
@@ -83,7 +87,17 @@ int main(void)
 	//wiegand rtx mode config 配置韦根收发模式
 	WiegandUse->ModeConfig(WG_ALL_MODE);
 	
+  /* NVIC configuration */
+  NVIC_Config();
+	
+	/* GPIO Configuration */
+  GPIO_Configuration();
+	
+	//TX Init
+	RS485_Init();
+	
 	//WiegandUse->SendData(temp_WG);
+ 	UART_485_Configuration();
 		
 	
 	while(1){
@@ -106,58 +120,83 @@ void NVIC_Config(void)
   /* Enable the USART Interrupt */
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelCmd =ENABLE;
+  /* Enable the DMA Interrupt */
+  NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel4_5_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPriority = 4;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 }
 
-/*******************************************************************************
-* Name  : UART1_Configuration for RS485
-* Deion        : Configures the uart1
-* Input                    : None
-* Output                 : None
-* Return                 : None
-*******************************************************************************/
-void UART_485_Configuration(void)
-{
-	
-	USART_InitTypeDef UART_InitStructure;
-	USART_ClockInitTypeDef UART_ClockInitStructure;
+/**
+  * @brief  Configures the different GPIO ports.
+  * @param  None
+  * @retval None
+  */
+void GPIO_Configuration(void)
+{    
   GPIO_InitTypeDef GPIO_InitStructure;
+  
+  /* Enable GPIOA clock */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);     
+  
+  GPIO_StructInit(&GPIO_InitStructure);
+  
+  GPIO_DeInit(GPIOA);
+  
+  /* USART1 Pins configuration
+    -PA09 = USART1_TX
+    -PA10 = USART1_RX
+    -PA12 = USART1_RTS (DE)
+  */
 	
-	/*串口时钟配置*/
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);
-	/*串口时钟使能， GPIO 时钟使能*/
-	USART_DeInit(USART1);
-	
-  /* 配置 USART1_Tx 作为推挽输出 */
+    
+  /* Connect pin to Periph*/
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_1);    
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_1);   
+  GPIO_PinAFConfig(GPIOA, GPIO_PinSource8, GPIO_AF_1); 
+  
+  /* 配置 USART1_Tx 作为推挽输出 
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
-  /* 配置 USART1_Rx 作为浮空输入 */
+  GPIO_Init(GPIOA, &GPIO_InitStructure);*/
+  /* 配置 USART1_Rx 作为浮空输入 
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+  GPIO_Init(GPIOA, &GPIO_InitStructure);*/
 	
-	/*fill the structure data*/
-	USART_StructInit(&UART_InitStructure);
-	/* Configure USART1 basic and asynchronous paramters */
-	USART_Init(USART1,&UART_InitStructure);
-	
-	USART_ClockStructInit(&UART_ClockInitStructure);
-	/* Configure the USART1 synchronous paramters */
-	USART_ClockInit(USART1,&UART_ClockInitStructure);
-	
-  /* NVIC configuration */
-  NVIC_Config();
-	
-	/* Enable USART1 Receive interrupts */
-  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-	USART_Cmd(USART1, ENABLE); //使能USART1	
+  /* Configure pins as AF pushpull */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_8;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);    
+}
+
+/**
+  * @brief  Enables peripheral clocks.
+  * @param  None
+  * @retval None
+  */
+void RCC_Configuration(void)
+{
+  /* Enable USART1 clocks */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+  
+  /* Configure SART1 clock */
+  RCC_USARTCLKConfig(RCC_USART1CLK_SYSCLK);
+  
+  /* Enable DMA1 AHB clock */
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 }
 
 
+void Delay(__IO uint32_t nCount)
+{
+	while(nCount--){}
+}
 
 #ifdef  USE_FULL_ASSERT
 

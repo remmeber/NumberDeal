@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    Project/STM32F0xx_StdPeriph_Templates/stm32f0xx_it.h 
+  * @file    system_stm32f0xx.h
   * @author  MCD Application Team
   * @version V1.5.0
   * @date    05-December-2014
-  * @brief   This file contains the headers of the interrupt handlers.
+  * @brief   CMSIS Cortex-M0 Device Peripheral Access Layer System Header File.
   ******************************************************************************
   * @attention
   *
@@ -25,37 +25,80 @@
   ******************************************************************************
   */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32F0XX_IT_H
-#define __STM32F0XX_IT_H
+/** @addtogroup CMSIS
+  * @{
+  */
+
+/** @addtogroup stm32f0xx_system
+  * @{
+  */  
+  
+/**
+  * @brief Define to prevent recursive inclusion
+  */
+#ifndef __SYSTEM_STM32F0XX_H
+#define __SYSTEM_STM32F0XX_H
 
 #ifdef __cplusplus
  extern "C" {
 #endif 
 
-/* Includes ------------------------------------------------------------------*/
+/** @addtogroup STM32F0xx_System_Includes
+  * @{
+  */
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
+/**
+  * @}
+  */
 
-void NMI_Handler(void);
-void HardFault_Handler(void);
-void SVC_Handler(void);
-void PendSV_Handler(void);
-void SysTick_Handler(void);
-void USART1_IRQHandler(void);
-void EXTI0_1_IRQHandler(void);
-void EXTI2_3_IRQHandler(void);
-void DMA1_Channel4_5_IRQHandler(void);
 
-/*void PPP_IRQHandler(void);*/
+/** @addtogroup STM32F0xx_System_Exported_types
+  * @{
+  */
+
+extern uint32_t SystemCoreClock;          /*!< System Clock Frequency (Core Clock) */
+
+/**
+  * @}
+  */
+
+/** @addtogroup STM32F0xx_System_Exported_Constants
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/** @addtogroup STM32F0xx_System_Exported_Macros
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/** @addtogroup STM32F0xx_System_Exported_Functions
+  * @{
+  */
+  
+extern void SystemInit(void);
+extern void SystemCoreClockUpdate(void);
+/**
+  * @}
+  */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __STM32F0XX_IT_H */
+#endif /*__SYSTEM_STM32F0XX_H */
 
+/**
+  * @}
+  */
+  
+/**
+  * @}
+  */  
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
