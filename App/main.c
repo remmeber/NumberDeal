@@ -12,7 +12,7 @@
 unsigned char WG_RCV_DATA[3] = {0};
 
 /*****************485数据接收数组*****************/
-unsigned char RS485_RCV_DATA[13] = {0};
+unsigned char RS485_RCV_DATA[12] = {0};
 
 /******************WG数据临时存储*****************/
 uint32_t WG_temp_buf = 0;
@@ -80,6 +80,11 @@ time			2016.09.30
 int main(void)
 {
 	uint8_t result[5] = {0};
+	
+	//unsigned char *test = getVehicle_Number_List();
+	//RS485_Data_Rcv(test,RS485_RCV_DATA);
+	//FLAG_REPERTORY |= DEAL_485;
+	
 	System_Initializes();
 	
 	USART_Printf((uint8_t*)"usart debug\r\n");		//供测试使用
@@ -89,13 +94,18 @@ int main(void)
 		switch(FLAG_REPERTORY)
 		{
 			case FREE:
-				Soft_delay_ms(10);											//空闲状态加入延时，防止mcu长期空闲运行
+				//Soft_delay_ms(10);											//空闲状态加入延时，防止mcu长期空闲运行
 				break;
 			case DEAL_485:
-				Deal_485_Data(RS485_RCV_DATA,result);
+					Deal_485_Data(RS485_RCV_DATA,result);
+					Soft_delay_ms(10);
+				//FLAG_REPERTORY |= DEAL_485;
 				break;
 			case DEAL_WG:
 				Deal_WG_Data(WG_RCV_DATA);
+				//FLAG_REPERTORY |= DEAL_WG;
+				USART_Printf((uint8_t*)"WG debug\r\n");
+					Soft_delay_ms(10);
 				break;
 			case BOTH:
 				if(Deal_485_Data(RS485_RCV_DATA,result))
@@ -135,14 +145,6 @@ uint8_t Deal_WG_Data(uint8_t *WG_Data)
 	uint8_t i = 0;
 	if(WG_Data == NULL)
 		return 0 ;
-	for(;i<4;i++)
-	{
-		temp_WG |= WG_Data[i];
-		if(i == 4)
-			break;
-		else
-			temp_WG <<= 8;
-	}
 	
 		FLAG_REPERTORY &= ~DEAL_WG;
 		if(FLAG_WG_CACHE == OCCUPIED)			//处理完当前韦根后，立即查询缓存标志位，提高处理效率
@@ -156,13 +158,8 @@ uint8_t Deal_WG_Data(uint8_t *WG_Data)
 			FLAG_485_CACHE = FREE;
 			FLAG_REPERTORY |= DEAL_485;
 		}
-	if(WG26_Check(temp_WG))
-	{
 		WiegandUse->SendData(WG_Data,WIEGAND26);
 		FLAG_WG_CACHE = FREE;
-		return 1;
-	}
-	else return 0;
 }
 
 /************************************************
@@ -184,11 +181,15 @@ uint8_t dealCarNumber(uint8_t *input,uint8_t *out)
 	//uint8_t outNum = 0;
 	if(input == NULL||out == NULL)
 		return 0;
-	firstAsciiOut = firstPartNumberOut(input,&position);
-	secondAsciiOut = secondPartNumberOut(&input[position]);
-	if(assembleAscii(&firstAsciiOut,&secondAsciiOut,2,out))
+	if(RS485_Check(input))
 	{
-		return 1;
+		input++;
+		firstAsciiOut = firstPartNumberOut(input,&position);
+		secondAsciiOut = secondPartNumberOut(&input[position]);
+		if(assembleAscii(&firstAsciiOut,&secondAsciiOut,2,out))
+		{
+			return 1;
+		}
 	}
 	return 0;
 }
@@ -210,7 +211,7 @@ uint8_t Deal_485_Data(uint8_t *input,uint8_t *result)
 		FLAG_REPERTORY &= ~DEAL_485;
 		if(FLAG_485_CACHE == OCCUPIED)		//处理完485数据后，立即去查询485缓存标志位，提高处理效率
 		{
-			RS485_Data_Rcv();
+			RS485_Data_Rcv(RS485_Rcv_temp,RS485_RCV_DATA);
 			FLAG_485_CACHE = FREE;
 			FLAG_REPERTORY |= DEAL_485;
 		}

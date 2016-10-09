@@ -20,11 +20,12 @@
 
 
 void UART_485_Configuration(void);
+uint8_t RS485_Check(uint8_t *input);
 /**********************DMA使用******************************
 void RS485_DMA_Init(void);
 void RS485_DMA_RcvData(uint8_t *USART1_RxBuffer);							
 void RS485_DMA_SendData(uint8_t *USART1_TxBuffer,uint32_t Length);
 ***********************************************************/
-void RS485_Data_Rcv(void);
+void RS485_Data_Rcv(uint8_t *input,uint8_t *output);
 
 #endif

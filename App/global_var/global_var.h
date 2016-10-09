@@ -43,7 +43,7 @@ extern uint8_t FLAG_485_CACHE;
 /*wg data receive pointer*/
 extern unsigned char WG_RCV_DATA[3];
 /*485 data receive pointer*/
-extern unsigned char RS485_RCV_DATA[13];
+extern unsigned char RS485_RCV_DATA[12];
 extern unsigned int WG_temp_buf ;
 extern unsigned char RS485_Rcv_temp[13] ;
 

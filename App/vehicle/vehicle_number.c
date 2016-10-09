@@ -65,12 +65,12 @@ unsigned int AlphaBeltaMask = 0x03FFBEFF; /*使用到的车牌字母掩码,用�
 /************************for test***********************/
 unsigned char g_Vehicle_Number_List_WJN[10] = {0x57,0x4A,0x31,0x34,0x31,0x32,0x33,0x30,0x45};//WJ141230E
 unsigned char g_Vehicle_Number_List_Normal[10] = {0x8F,0xBD,0x45,0x31,0x32,0x33,0x30,0x45};//辽E1230E
-unsigned char g_Vehicle_Number_List_Force[10] = {0x53,0x4D,0x31,0x32,0x33,0x30,0x45};//沈M1230E
+unsigned char g_Vehicle_Number_List_Normal_ZJ[12] = {0x42,0xD5,0xE3,0x41,0x33,0x37,0x33,0x42,0x57,0x00,0x71,0x03};//浙A373BW
 unsigned char g_Vehicle_Number_List_WJF[10] = {0x57,0x4A,0x31,0x34,0x68,0xEE,0x32,0x33,0x30,0x45};//WJ141230E
 
-unsigned char *getVehicle_Number_List_WJN(void)
+unsigned char *getVehicle_Number_List(void)
 {
-	return &g_Vehicle_Number_List_WJF[0];
+	return &g_Vehicle_Number_List_Normal_ZJ[0];
 }
 
 /*******************************************************/

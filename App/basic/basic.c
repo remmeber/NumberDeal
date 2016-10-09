@@ -113,7 +113,7 @@ void NVIC_Configuration(void)
 	
   /************************ Õ‚≤ø÷–∂œ≈‰÷√ **********************/
   NVIC_InitStructure.NVIC_IRQChannel 			= EXTI4_15_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelPriority 	= 1;
+  NVIC_InitStructure.NVIC_IRQChannelPriority 	= 2;
   NVIC_InitStructure.NVIC_IRQChannelCmd 		= ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 }
