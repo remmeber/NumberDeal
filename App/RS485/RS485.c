@@ -4,31 +4,31 @@
 DMA_InitTypeDef DMA_InitStructure;
 
 /*******************************************************************************
-* Name  : UART1_Configuration for RS485
-* Deion        : Configures the uart1
-* Input                    : None
-* Output                 : None
-* Return                 : None
+* Name  				:UART1_Configuration for RS485
+* Deion        	:Configures the uart1
+* Input         :None
+* Output        :None
+* Return        :None
 *******************************************************************************/
 void UART_485_Configuration(void)
 {
 	
 	USART_InitTypeDef USART_InitStructure;
 	/******************************************************************
-  USART²ÎÊý³õÊ¼»¯:  ²¨ÌØÂÊ     ´«ÊäÎ»Êý   Í£Ö¹Î»Êý  Ð£ÑéÎ»Êý
+  USART配置:       波特率   		长度   停止位  			校验位
                     9600         8         1        0(NO)
   *******************************************************************/
-  USART_InitStructure.USART_BaudRate = 9600;                       //Éè¶¨´«ÊäËÙÂÊ
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;        //Éè¶¨´«ÊäÊý¾ÝÎ»Êý
-  USART_InitStructure.USART_StopBits = USART_StopBits_1;             //Éè¶¨Í£Ö¹Î»¸öÊý
-  USART_InitStructure.USART_Parity = USART_Parity_No ;               //²»ÓÃÐ£ÑéÎ»
-  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//²»ÓÃÁ÷Á¿¿ØÖÆ
-  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;    //Ê¹ÓÃ½ÓÊÕºÍ·¢ËÍ¹¦ÄÜ
-  USART_Init(USART1, &USART_InitStructure);                          //³õÊ¼»¯USART1
+  USART_InitStructure.USART_BaudRate = 9600;                       
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b;        
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;           
+  USART_InitStructure.USART_Parity = USART_Parity_No ;              
+  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;    
+  USART_Init(USART1, &USART_InitStructure);                         
 
-  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);                     //Ê¹ÄÜUSART1½ÓÊÕÖÐ¶Ï
+  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);                     
 
-  USART_Cmd(USART1, ENABLE);                                         //Ê¹ÄÜUSART1
+  USART_Cmd(USART1, ENABLE);                                        
 	/* Enable driver enable mode */  
   //USART_DECmd(USART1, ENABLE);
 
@@ -89,6 +89,15 @@ void UART_485_Configuration(void)
   //USART_DMACmd(USART2, USART_DMAReq_Tx, ENABLE);//设置发送标志位
 }
 
+/************************************************
+author				ruanhugang
+function 			RS485_Check
+description 	Validate RS485
+arg(input)		input
+return				1:right; 0:error
+out(outpur)		null
+time					2016.09.30
+*************************************************/
 uint8_t RS485_Check(uint8_t *input)
 {
 	uint16_t checkSum = 0;
