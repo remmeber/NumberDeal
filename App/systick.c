@@ -25,7 +25,7 @@ void SysTick_Init(void)
 		while (1);
 	}
 	//设置滴答定时器优先级
-	NVIC_SetPriority (SysTick_IRQn, 3 );   //优先级为 0：3
+	NVIC_SetPriority (SysTick_IRQn, 1);   //优先级为 0：3
   //关闭滴答定时器  
   SysTick->CTRL &= ~ SysTick_CTRL_ENABLE_Msk;
 	//开启滴答定时器

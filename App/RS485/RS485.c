@@ -4,11 +4,11 @@
 DMA_InitTypeDef DMA_InitStructure;
 
 /*******************************************************************************
-* Name  : UART1_Configuration for RS485
-* Deion        : Configures the uart1
-* Input                    : None
-* Output                 : None
-* Return                 : None
+* Name  				:UART1_Configuration for RS485
+* Deion        	:Configures the uart1
+* Input         :None
+* Output        :None
+* Return        :None
 *******************************************************************************/
 void UART_485_Configuration(void)
 {
@@ -88,6 +88,32 @@ void UART_485_Configuration(void)
   //USART_DMACmd(USART2, USART_DMAReq_Tx, ENABLE);//设置发送标志位
 }
 
+/************************************************
+author				ruanhugang
+function 			RS485_Check
+description 	Validate RS485
+arg(input)		input
+return				1:right; 0:error
+out(outpur)		null
+time					2016.09.30
+*************************************************/
+uint8_t RS485_Check(uint8_t *input)
+{
+	uint16_t checkSum = 0;
+	uint8_t i = 0;
+	if (input == 0)
+        return 0;
+    if (input[0] == 0x42)
+    {
+        for (; i <= 9; i++)
+            checkSum += input[i];
+    }
+    if ((uint8_t)(checkSum >> 8) == input[11] && (uint8_t)checkSum == input[10])
+        return 1;
+    else
+        return 0;
+}
+
 /*DMA 初始化*/
 void RS485_DMA_Init(void)
 {
@@ -121,12 +147,12 @@ void RS485_DMA_RcvData(uint8_t *USART1_RxBuffer)
   DMA_Cmd(DMA1_Channel5, ENABLE);
 }
 
-void RS485_Data_Rcv(void)
+void RS485_Data_Rcv(uint8_t *input,uint8_t *output)
 {
 	int i;
-	for(i=0;i<13;i++)
+	for(i=0;i<12;i++)
 	{
-		RS485_RCV_DATA[i] = RS485_Rcv_temp[i];
+		output[i] = input[i];
 	}
 }
 

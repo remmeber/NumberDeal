@@ -101,11 +101,11 @@ void SysTick_Handler(void)
 			tim_free_cnt++;
 		if(tim_free_cnt>=WG_MAX_BOUD_TIM){
 			SysTick->CTRL &= ~ SysTick_CTRL_ENABLE_Msk;  //???????
-			WG_temp_buf = 0;
 			FLAG_EXTI |= TIMEOUT;
 			if(WG_cnt<=WIEGAND26)
 				FLAG_EXTI |= TOO_SHORT;//设置WG格式错误标志位
 			WG_cnt = 0;
+			WG_temp_buf = 0;
 			tim_cnt = 0;
 			FLAG_CHECK_FREE = 0;
 			return;
@@ -145,7 +145,7 @@ void USART1_IRQHandler(void)
 		{
 			count=0;
 			if((FLAG_REPERTORY & DEAL_485) == FREE){
-				RS485_Data_Rcv();
+				RS485_Data_Rcv(RS485_Rcv_temp,RS485_RCV_DATA);
 				FLAG_485_CACHE = FREE;
 				FLAG_REPERTORY |= DEAL_485;
 			}
@@ -170,23 +170,26 @@ time				:2016.09.30
 
 void EXTI4_15_IRQHandler(void)
 {
-	if(FLAG_WG_CACHE == OCCUPIED)
+	if(FLAG_WG_CACHE == OCCUPIED){
 			return;
+	}
   if(EXTI_GetITStatus(WG_DATA0_EXIT_LINE) != RESET) //???????EXTI Line??
 	{
 		FLAG_EXTI = RESET;//清除外部中断超时标志位，只要重新中断，就把中断检测标志位清0，进入下一间隔的检测
 		
-		if(tim_free_cnt>0&&tim_free_cnt<WG_MAX_BOUD_TIM)//???????????,?????????
+		if(tim_free_cnt>0)//???????????,?????????
 			tim_free_cnt=0;
 		if(!FLAG_CHECK_FREE)
 			FLAG_CHECK_FREE = 1;//??????
 		if((GPIO_ReadInputDataBit(WG_GPIO,WG_EXTI_PIN_1) == 1))// && (tim_cnt <= WG_MAX_BOUD_TIM))  //???????bit??????
 		{
-			SYSTICK_Delay_Flag = 1;
-			SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //???????  //10us????
-			//SysTick->VAL = 0;
+			//SYSTICK_Delay_Flag = 1;
+			//SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //???????  //10us????
+			SysTick->VAL = 0;
 			while(GPIO_ReadInputDataBit(WG_GPIO,WG_EXTI_PIN_0) == 0)  //????
 			{
+				SYSTICK_Delay_Flag = 1;
+				SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //???????  //10us????
 				//SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //???????  //10us????
 			}
 			SYSTICK_Delay_Flag = 0;
@@ -218,10 +221,13 @@ void EXTI4_15_IRQHandler(void)
 		
 		if((GPIO_ReadInputDataBit(WG_GPIO,WG_EXTI_PIN_0) == 1))// && (tim_cnt <= WG_MAX_BOUD_TIM))  
 		{
-			SYSTICK_Delay_Flag = 1;
-			SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //打开滴答定时器  //10us一周期
+			//SYSTICK_Delay_Flag = 1;
+			//SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //打开滴答定时器  //10us一周期
+			SysTick->VAL = 0;
 			while(GPIO_ReadInputDataBit(WG_GPIO,WG_EXTI_PIN_1) == 0)  //读取端口数据
 			{
+				SYSTICK_Delay_Flag = 1;
+				SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //詹擢謳瞻吱时欠  //10us一诇菤
 			}
 			//SysTick->CTRL &= ~ SysTick_CTRL_ENABLE_Msk;
 			SYSTICK_Delay_Flag = 0;

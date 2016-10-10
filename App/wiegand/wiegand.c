@@ -78,7 +78,6 @@ void WG_Send_Byte(uint8_t WG_Byte)
 void Send_Wiegand26(uint8_t *str)
 {
     uint8_t i;
-    uint8_t *WG_Data;
     uint8_t even;       //韦根包前12位偶效验
     uint8_t odd;        //韦根包后12位齐效验
 		
@@ -96,9 +95,8 @@ void Send_Wiegand26(uint8_t *str)
     //韦根 输出端初始化
 		WG_DATA0_HIGH;
 		WG_DATA1_HIGH;
-	
     //发送偶效验
-    if(even == 0)
+    if((even&0x01) == 0)
     {
         WG_Send_Bit_0();
     }
@@ -110,11 +108,11 @@ void Send_Wiegand26(uint8_t *str)
     //发送24位数据
     for(i = 0;i<3;i++)
     {
-			WG_Send_Byte(WG_Data[i]);
+			WG_Send_Byte(str[i]);
     }
 	
     //发送奇效验位
-    if(odd == 0)
+    if((odd&0x01) == 1)
     {
         WG_Send_Bit_0();
     }
@@ -184,11 +182,12 @@ time				:	2016.09.30
 *************************************************/
 uint8_t Get_WG26_Data(uint32_t src_wg26 , uint8_t *dir_ptr)
 {
+	
 	if(WG26_Check(src_wg26))
 	{
-		*(dir_ptr++) =(uint8_t)src_wg26 >>17;   //MSB
-		*(dir_ptr++) =(uint8_t)src_wg26 >> 9;
-		*(dir_ptr)   =(uint8_t)src_wg26 >> 1;
+		*(dir_ptr++) =(uint8_t)(src_wg26 >>17);   //MSB
+		*(dir_ptr++) =(uint8_t)(src_wg26 >> 9);
+		*(dir_ptr)   =(uint8_t)(src_wg26 >> 1);
 		return 1;
 	}else
 	return 0;
