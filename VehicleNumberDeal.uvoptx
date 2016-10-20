@@ -82,12 +82,12 @@
         <Book>
           <Number>0</Number>
           <Title>Data Brief (STM32F051-Discovery)</Title>
-          <Path>H:\UV5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Boards\ST\STM32F051-Discovery\Documents\DM00050631.pdf</Path>
+          <Path>D:\UV5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Boards\ST\STM32F051-Discovery\Documents\DM00050631.pdf</Path>
         </Book>
         <Book>
           <Number>1</Number>
           <Title>Schematics (STM32F051-Discovery)</Title>
-          <Path>H:\UV5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Boards\ST\STM32F051-Discovery\Documents\MB1034.pdf</Path>
+          <Path>D:\UV5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Boards\ST\STM32F051-Discovery\Documents\MB1034.pdf</Path>
         </Book>
         <Book>
           <Number>2</Number>
@@ -213,12 +213,42 @@
           <WinNumber>1</WinNumber>
           <ItemText>c</ItemText>
         </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>input</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>input</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>LED_PIN</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>GPIOx-&gt;BRR</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>USARTx-&gt;TDR</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>USARTx-&gt;TDR</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x20000024</ItemText>
+          <ItemText>GPIOx-&gt;BSRR</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -273,8 +303,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Libraries\CMSIS\DeviceSupport\startup\startup_stm32f051.s</PathWithFileName>
-      <FilenameWithoutPath>startup_stm32f051.s</FilenameWithoutPath>
+      <PathWithFileName>.\Libraries\CMSIS\DeviceSupport\startup\startup_stm32f030.s</PathWithFileName>
+      <FilenameWithoutPath>startup_stm32f030.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -503,6 +533,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\App\usart\usart.c</PathWithFileName>
       <FilenameWithoutPath>usart.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>4</GroupNumber>
+      <FileNumber>19</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\App\led.c</PathWithFileName>
+      <FilenameWithoutPath>led.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

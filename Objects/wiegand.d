@@ -1,8 +1,9 @@
 .\objects\wiegand.o: App\wiegand\wiegand.c
 .\objects\wiegand.o: App\wiegand\wiegand.h
+.\objects\wiegand.o: .\App\led.h
+.\objects\wiegand.o: D:\UV5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\wiegand.o: .\App\stm32f0xx.h
 .\objects\wiegand.o: .\Libraries\CMSIS\CoreSupport\core_cm0.h
-.\objects\wiegand.o: D:\UV5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\wiegand.o: .\Libraries\CMSIS\CoreSupport\core_cmInstr.h
 .\objects\wiegand.o: .\Libraries\CMSIS\CoreSupport\core_cmFunc.h
 .\objects\wiegand.o: .\Libraries\CMSIS\DeviceSupport\system_stm32f0xx.h

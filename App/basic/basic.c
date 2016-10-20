@@ -1,6 +1,7 @@
 
 #include "basic.h"
 #include "wiegand.h"
+#include "led.h"
 #include "RS485.h"
 
 
@@ -16,12 +17,13 @@ time			:2016.09.30
 void RCC_Configuration(void)
 {
   /************************使能AHB时钟**************************/
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA , ENABLE);
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA|RCC_AHBPeriph_GPIOB , ENABLE);
 
   /************************使能APB2时钟**************************/
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1|RCC_APB2Periph_SYSCFG, ENABLE);
 
   /************************使能APB1时钟**************************/
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 }
 
 
@@ -37,7 +39,7 @@ time		:2016.09.30
 void GPIO_Basic_Configuration(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
-  /************************ RS485接收端口配置 **********************/
+  /************************ RS485杈撳叆閰嶇疆 **********************/
   GPIO_PinAFConfig(GPIOA, RS485_RX_DATA0_PinSource9, 	GPIO_AF_1);
   GPIO_PinAFConfig(GPIOA, RS485_RX_DATA1_PinSource10, 	GPIO_AF_1);   
 	
@@ -55,9 +57,9 @@ void GPIO_Basic_Configuration(void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
   
-  /************************ RS485发送端口配置 **********************/
+  /************************ RS485杈撳嚭閰嶇疆 **********************/
   GPIO_PinAFConfig(GPIOA, RS485_TX_DATA0_PinSource2, 	GPIO_AF_1);
-  GPIO_PinAFConfig(GPIOA, RS485_TX_DATA0_PinSource3, 	GPIO_AF_1);   
+  GPIO_PinAFConfig(GPIOA, RS485_TX_DATA1_PinSource3, 	GPIO_AF_1);   
 	
   GPIO_InitStructure.GPIO_Pin = RS485_TX_DATA0_Pin | RS485_TX_DATA1_Pin;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
@@ -73,7 +75,7 @@ void GPIO_Basic_Configuration(void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-  /************************ WG输出端口配置 **********************/
+  /************************ WG杈撳嚭閰嶇疆 **********************/
   GPIO_InitStructure.GPIO_Pin = WG_DATA0_PIN | WG_DATA1_PIN;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
@@ -82,12 +84,20 @@ void GPIO_Basic_Configuration(void)
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	
-  /************************ WG输入端口配置 **********************/
+  /************************ WG杈撳叆閰嶇疆 **********************/
   GPIO_InitStructure.GPIO_Pin = WG_EXTI_PIN_0|WG_EXTI_PIN_1;   
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	    
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;	 
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP	;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	
+  /************************ LED杈撳嚭閰嶇疆 **********************/
+  GPIO_InitStructure.GPIO_Pin = LED_PIN;   
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	    
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;	 
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 }

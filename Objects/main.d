@@ -36,5 +36,6 @@
 .\objects\main.o: .\App\global_var\global_var.h
 .\objects\main.o: App\systick.h
 .\objects\main.o: .\App\RS485\RS485.h
+.\objects\main.o: App\led.h
 .\objects\main.o: D:\UV5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\main.o: D:\UV5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -40,6 +40,8 @@ extern uint8_t FLAG_WG_CACHE;
 
 extern uint8_t FLAG_485_CACHE;
 
+extern uint8_t FLAG_DATA;
+
 /*wg data receive pointer*/
 extern unsigned char WG_RCV_DATA[3];
 /*485 data receive pointer*/

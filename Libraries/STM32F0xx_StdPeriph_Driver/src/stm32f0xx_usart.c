@@ -965,6 +965,18 @@ void USART_Printf(uint8_t *String)
 	USART_SendData(USART1,0x0A);
 }
 
+void USART_Send(USART_TypeDef* USARTx,uint8_t *String)
+{
+	uint8_t i=0;
+	while(i<12)
+  {
+    USART_SendData(USARTx,*String);		
+		while(USART_GetFlagStatus(USARTx,USART_FLAG_TXE)==RESET){};				//发送完后一定要清除发送标志位，否则只发两个字节；
+    String++;
+			i++;
+  }
+}
+
 /**
   * @brief  Returns the most recent received data by the USARTx peripheral.
   * @param  USARTx: where x can be from 1 to 8 to select the USART peripheral.

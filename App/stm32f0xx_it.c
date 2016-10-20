@@ -130,30 +130,36 @@ time				:2016.09.30
 *************************************************/
 void USART1_IRQHandler(void)
 {
-	if (USART_GetFlagStatus(USART1, USART_FLAG_ORE) != RESET)//??!????if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)???
+	uint8_t temp = 0;
+	//if (USART_GetFlagStatus(USART1, USART_FLAG_ORE) != RESET)//??!????if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)???T
+	if(USART_GetFlagStatus(USART1,USART_FLAG_ORE)!=RESET)
 	{
 		USART_ReceiveData(USART1);
+		USART_ClearITPendingBit(USART1, USART_IT_ORE);
 	}
 	if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET){
 		
 		if(FLAG_485_CACHE == OCCUPIED)
 			return;
-		
-		RS485_Rcv_temp[count] = USART_ReceiveData(USART1)&0xff;
+		temp = USART_ReceiveData(USART1)&0xff;
+		if(FLAG_DATA == FREE && temp == 'B' )
+			FLAG_DATA = DATA_COMING;
+		RS485_Rcv_temp[count] = temp;
 		count++;
-		if(count==13)//
+		if(count==12)//
 		{
 			count=0;
 			if((FLAG_REPERTORY & DEAL_485) == FREE){
 				RS485_Data_Rcv(RS485_Rcv_temp,RS485_RCV_DATA);
 				FLAG_485_CACHE = FREE;
+				FLAG_DATA = FREE;
 				FLAG_REPERTORY |= DEAL_485;
 			}
 			else FLAG_485_CACHE = OCCUPIED;
 			//USART_Printf(RS485_RCV_DATA);
 			USART_ClearITPendingBit(USART1, USART_IT_RXNE);
 			
-		}
+	}
   }
 }
 

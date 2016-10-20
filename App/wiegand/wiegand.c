@@ -6,7 +6,7 @@
    @brief   韦根数据的收发
 ******************************************************************************/
 #include "wiegand.h"
-#include "stm32f0xx.h"
+#include "led.h"
 
 tWiegandConfig WiegandConfig;
 
@@ -42,10 +42,10 @@ void WG_Send_Bit_1(void)
 {
 	WG_DATA1_LOW;
     //延时100us
-    Soft_delay_us(100);
+    Soft_delay_us(60);
 	WG_DATA1_HIGH;
     //延时一个发送周期
-    Soft_delay_ms(2);    
+    Soft_delay_us(1900);    
 }
 
 //发送韦根数据0
@@ -53,13 +53,24 @@ void WG_Send_Bit_0(void)
 {
 	WG_DATA0_LOW;
     //延时100us
-    Soft_delay_us(100);
+    Soft_delay_us(60);
 	WG_DATA0_HIGH;
     //延时一个发送周期
-    Soft_delay_ms(2);    
+    Soft_delay_us(1900);    
 }
 
 //发送一个字节韦根数据
+
+/************************************************
+
+author			:	ruanhugang
+function 		:	WG_Send_Byte
+description :	Send one byte 
+arg(input1)	:	WG_Byte
+return			:	null
+out(output)	:	null
+time				:	2016.09.30
+*************************************************/
 void WG_Send_Byte(uint8_t WG_Byte)
 {
 	uint8_t i;
@@ -74,7 +85,16 @@ void WG_Send_Byte(uint8_t WG_Byte)
 }
 
 
-//发送韦根26位数据
+/************************************************
+
+author			:	ruanhugang
+function 		:	Send_Wiegand26
+description :	Send WG 26-bit data 
+arg(input1)	:	src_wg26
+return			:	null
+out(output)	:	null
+time				:	2016.09.30
+*************************************************/
 void Send_Wiegand26(uint8_t *str)
 {
     uint8_t i;
@@ -165,8 +185,10 @@ uint8_t WG26_Check(uint32_t src_wg26)
 		/*可在此处加入自己的验证程序*/
 		return 1;
 	}
-	else
+	else{
+		LedBlink(4);
 		return 0;
+	}
 }
 
 
@@ -344,6 +366,7 @@ void Send_Wiegand(unsigned char *str,unsigned char type)
 		Send_Wiegand42(str);
 	else if(type == WIEGAND26)
 		Send_Wiegand26(str);
+	LedBlink(1);
 }
 
 

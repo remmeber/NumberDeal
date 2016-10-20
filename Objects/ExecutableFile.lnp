@@ -1,5 +1,5 @@
 --cpu Cortex-M0
-".\objects\startup_stm32f051.o"
+".\objects\startup_stm32f030.o"
 ".\objects\stm32f0xx_gpio.o"
 ".\objects\stm32f0xx_misc.o"
 ".\objects\stm32f0xx_rcc.o"
@@ -17,6 +17,7 @@
 ".\objects\basic.o"
 ".\objects\global_var.o"
 ".\objects\usart.o"
+".\objects\led.o"
 --strict --scatter ".\Objects\ExecutableFile.sct"
 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

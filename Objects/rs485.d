@@ -33,3 +33,4 @@
 .\objects\rs485.o: .\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 .\objects\rs485.o: .\App\global_var\global_var.h
 .\objects\rs485.o: .\App\wiegand\wiegand.h
+.\objects\rs485.o: .\App\led.h

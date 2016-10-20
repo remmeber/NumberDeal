@@ -429,11 +429,10 @@ ARM Macro Assembler    Page 7
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --apcs=interw
 ork --depend=.\objects\startup_stm32f051.d -o.\objects\startup_stm32f051.o -IC:
-\Users\Administrator\Desktop\485\车牌处理\Vehicle_Number_Complete\RTE -ID:\UV5\
-ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include -ID:\UV5\ARM\CMSIS\Include --p
-redefine="__UVISION_VERSION SETA 521" --predefine="STM32F051x8 SETA 1" --list=.
-\listings\startup_stm32f051.lst Libraries\CMSIS\DeviceSupport\startup\startup_s
-tm32f051.s
+\Users\Administrator\Desktop\485\车牌处理\NumberDeal\RTE -ID:\UV5\ARM\PACK\Keil
+\STM32F0xx_DFP\1.5.0\Device\Include -ID:\UV5\ARM\CMSIS\Include --predefine="__U
+VISION_VERSION SETA 521" --predefine="STM32F051x8 SETA 1" --list=.\listings\sta
+rtup_stm32f051.lst Libraries\CMSIS\DeviceSupport\startup\startup_stm32f051.s
 
 
 

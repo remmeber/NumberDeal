@@ -1,5 +1,7 @@
 #include "RS485.h"
 #include "global_var.h"
+#include "led.h"
+#include "stm32f0xx_usart.h"
 
 DMA_InitTypeDef DMA_InitStructure;
 
@@ -26,6 +28,7 @@ void UART_485_Configuration(void)
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;    				    //使用接收和发送功能
   USART_Init(USART1, &USART_InitStructure);                          				    //初始化USART1
   USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);                     				    //使能USART1接收中断
+	USART_ITConfig(USART1, USART_IT_ORE, ENABLE);
 
   USART_Cmd(USART1, ENABLE);                                         				     //使能USART1
 	/* Enable driver enable mode */  
@@ -110,11 +113,29 @@ uint8_t RS485_Check(uint8_t *input)
     }
     if ((uint8_t)(checkSum >> 8) == input[11] && (uint8_t)checkSum == input[10])
         return 1;
-    else
+    else{
+				LedBlink(3);
         return 0;
+		}
 }
 
-/*DMA 初始化*/
+/************************************************
+author				ruanhugang
+function 			RS485_SendData
+description 	Send RS485 date
+arg(input)		send
+return				null
+out(outpur)		null
+time					2016.10.19
+*************************************************/
+void RS485_SendData(uint8_t *send)
+{
+	LedBlink(2);										//发送485数据，灯闪两下
+	USART_Send(USART2,send);				
+	
+}
+
+/***************************DMA 初始化 未使用*************************/
 void RS485_DMA_Init(void)
 {
 	DMA_DeInit(DMA1_Channel5);
@@ -137,7 +158,7 @@ void RS485_DMA_Init(void)
 	DMA_ClearFlag(DMA1_FLAG_TC5);
 	
 }
-/*485 DMA1数据接收*/
+/***********************485 DMA1数据接收 未使用***************************/
 void RS485_DMA_RcvData(uint8_t *USART1_RxBuffer)
 {
   DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)USART1_RxBuffer;
@@ -156,7 +177,7 @@ void RS485_Data_Rcv(uint8_t *input,uint8_t *output)
 	}
 }
 
-/*485 DMA2数据发送*/
+/****************************485 DMA2数据发送 未使用**********************/
 void RS485_DMA_SendData(uint8_t *USART2_TxBuffer,uint32_t Length)
 {
 	GPIO_SetBits(GPIOA,GPIO_Pin_11);

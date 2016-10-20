@@ -1,5 +1,5 @@
 #include "usart.h"
-
+#include "wiegand.h"
 
 /************************************************
 author		  ruanhugang
@@ -23,10 +23,12 @@ void USART_Configuration(void)
   USART_InitStructure.USART_Parity = USART_Parity_No ;              			 	      //不用校验位
   USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;	//不用流量控制
   USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;    				      //使用接收和发送功能
-  USART_Init(USART1, &USART_InitStructure);                          				      //初始化USART1
-
+  USART_Init(USART2, &USART_InitStructure);                          				      //初始化USART2
+  USART_Init(USART1, &USART_InitStructure);                          				    	//初始化USART1
+	
   USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);                     				      //使能USART1接收中断
-
+  //USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);                     				     //使能USART2接收中断
+  USART_Cmd(USART2, ENABLE);                                         				      //使能USART2
   USART_Cmd(USART1, ENABLE);                                         				      //使能USART1
 }
 

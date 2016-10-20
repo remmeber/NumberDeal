@@ -380,9 +380,9 @@
           <GroupName>Startup Code</GroupName>
           <Files>
             <File>
-              <FileName>startup_stm32f051.s</FileName>
+              <FileName>startup_stm32f030.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\Libraries\CMSIS\DeviceSupport\startup\startup_stm32f051.s</FilePath>
+              <FilePath>.\Libraries\CMSIS\DeviceSupport\startup\startup_stm32f030.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -483,6 +483,11 @@
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\App\usart\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\led.c</FilePath>
             </File>
           </Files>
         </Group>
