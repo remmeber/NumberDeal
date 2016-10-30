@@ -35,7 +35,7 @@
 #define WG_MAX_D0_TIM  20
 
 #define WG_MIN_BOUD_TIM  20
-#define WG_MAX_BOUD_TIM  20000
+#define WG_MAX_BOUD_TIM  2000
 
 #define WIEGAND26  25
 #define WIEGAND34  33

@@ -22,8 +22,8 @@ void LedBlink(uint8_t blink_times)
 	for(;times<blink_times;times++)
 	{
 		LED_ON;
-		Soft_delay_ms(500);
+		Soft_delay_ms(250);
 		LED_OFF;
-		Soft_delay_ms(500);
+		Soft_delay_ms(250);
 	}
 }

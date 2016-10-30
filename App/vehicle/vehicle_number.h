@@ -33,7 +33,7 @@ unsigned short int firstPartNumberOut(unsigned char *input , unsigned char *poin
 unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset,unsigned char *out);
 
 /*for test*/
-	unsigned char *getVehicle_Number_List(void);
+	unsigned char *getVehicle_Number_List(unsigned char index);
 //extern unsigned char g_Vehicle_Number_List_Normal[10];//辽E1230E
 //extern unsigned char g_Vehicle_Number_List_Force[10] ;//沈M1230E
 //extern unsigned char g_Vehicle_Number_List_WJN[10] ;//WJ141230E

@@ -42,7 +42,7 @@ void WG_Send_Bit_1(void)
 {
 	WG_DATA1_LOW;
     //延时100us
-    Soft_delay_us(60);
+    Soft_delay_us(40);
 	WG_DATA1_HIGH;
     //延时一个发送周期
     Soft_delay_us(1900);    
@@ -53,10 +53,10 @@ void WG_Send_Bit_0(void)
 {
 	WG_DATA0_LOW;
     //延时100us
-    Soft_delay_us(60);
+    Soft_delay_us(40);
 	WG_DATA0_HIGH;
     //延时一个发送周期
-    Soft_delay_us(1900);    
+    Soft_delay_us(1900); 
 }
 
 //发送一个字节韦根数据

@@ -128,10 +128,10 @@ return				null
 out(outpur)		null
 time					2016.10.19
 *************************************************/
-void RS485_SendData(uint8_t *send)
+void RS485_SendData(uint8_t *send,uint8_t length)
 {
-	LedBlink(2);										//发送485数据，灯闪两下
-	USART_Send(USART2,send);				
+	//LedBlink(2);										//发送485数据，灯闪两下
+	USART_Send(USART2,send,length);				
 	
 }
 

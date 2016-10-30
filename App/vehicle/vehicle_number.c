@@ -63,14 +63,20 @@ SECOND_Part_Vehicl_NumberDef g_SecondFiveVehicleNumberList[SECOND_PART_VEHICLE_N
 unsigned int AlphaBeltaMask = 0x03FFBEFF; /*使用到的车牌字母掩码,用于排序*/
 
 /************************for test***********************/
-unsigned char g_Vehicle_Number_List_WJN[10] = {0x57,0x4A,0x31,0x34,0x31,0x32,0x33,0x30,0x45};//WJ141230E
-unsigned char g_Vehicle_Number_List_Normal[10] = {0x8F,0xBD,0x45,0x31,0x32,0x33,0x30,0x45};//辽E1230E
-unsigned char g_Vehicle_Number_List_Normal_ZJ[12] = {0x42,0xD5,0xE3,0x41,0x33,0x37,0x33,0x42,0x57,0x00,0x71,0x03};//浙A373BW
-unsigned char g_Vehicle_Number_List_WJF[10] = {0x57,0x4A,0x31,0x34,0x68,0xEE,0x32,0x33,0x30,0x45};//WJ141230E
+unsigned char g_Vehicle_Number_List_Normal_ZJ[12] = {0x42,0xD5,0xE3,0x41,0x33,0x37,0x33,0x42,0x57,0x30,0xA1,0x03};//浙A373BW
+unsigned char g_Vehicle_Number_List_WJN[12] = 			{0x42,0x57,0x4A,0x31,0x34,0x31,0x32,0x33,0x30,0x45,0x53,0x02};//WJ141230E
+unsigned char g_Vehicle_Number_List_Normal_LN[12] = {0x42,0xC1,0xC9,0x45,0x31,0x32,0x33,0x30,0x45,0x30,0x4C,0x03};//辽E1230E
+//unsigned char g_Vehicle_Number_List_WJF[10] = {0x57,0x4A,0x31,0x34,0x68,0xEE,0x32,0x33,0x30,0x45};//WJ141230E
 
-unsigned char *getVehicle_Number_List(void)
+unsigned char *getVehicle_Number_List(uint8_t index)
 {
-	return &g_Vehicle_Number_List_Normal_ZJ[0];
+	if(index == 0)
+		return &g_Vehicle_Number_List_Normal_ZJ[0];
+	else if(index == 1)
+		return &g_Vehicle_Number_List_WJN[0];
+	else if(index == 2)
+		return &g_Vehicle_Number_List_Normal_LN[0];
+	else return (uint8_t*)"out of index";
 }
 
 /*******************************************************/
@@ -212,7 +218,7 @@ unsigned short int firstPartNumberOut(unsigned char *input , unsigned char *poin
 	unsigned short int firstTwoAscii = uint8ToUint16(*(input),*(input+1));
 	unsigned char isIn = CheckIfInFisrtPartVehicleNumberList(firstTwoAscii,&position);
 	FIRST_Part_Vehicle_NumberDef *numberList = getVehicleNumHead();
-	USART_Printf((uint8_t*)"\r\nDeal CarNumber\r\n");
+	//USART_Printf((uint8_t*)"\r\nDeal CarNumber\r\n");
 	if(!isIn)
 	{
 		USART_Printf((uint8_t*)"invalid cartNumber First Part");
@@ -240,7 +246,7 @@ unsigned short int firstPartNumberOut(unsigned char *input , unsigned char *poin
 		*pointer = 4;
 		
 	}
-	Debug_Print(1,(char*)&firstOutAscii);
+	Debug_Print(0,(char*)&firstOutAscii);
 	return firstOutAscii;
 }
 
@@ -257,7 +263,7 @@ unsigned int secondPartNumberOut(unsigned char *input)
 	unsigned char count = 0;
 	unsigned char position = 0;
 	unsigned int result=0;
-	USART_Printf((uint8_t*)"\r\nDeal CarNumber Second Part\r\n");
+	//USART_Printf((uint8_t*)"\r\nDeal CarNumber Second Part\r\n");
 	while(count<5){
 		if(*input >= 0x30 && *input <= 0x39){								//字符为数字类型 0-9
 			result |= *input - 0x30;
@@ -303,7 +309,7 @@ unsigned int secondPartNumberOut(unsigned char *input)
 unsigned char assembleAscii(unsigned short int *input1,unsigned int *input2,unsigned char offset,unsigned char *out){
 	unsigned char firstFinalOut = 0;
 	unsigned int secondFinalOut = 0;
-	USART_Printf((uint8_t*)"assembleAscii\r\n");
+	//USART_Printf((uint8_t*)"assembleAscii\r\n");
 
 	if(input1 == NULL||input2 ==NULL){
 		return 0;

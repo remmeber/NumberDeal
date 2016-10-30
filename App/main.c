@@ -11,6 +11,8 @@
 
 /******************WG数据接收数组*****************/
 uint8_t WG_RCV_DATA[3] = {0};
+/******************WG测试数数组*****************/
+uint8_t WG_RCV_DATA_TEXT[3] = {0x5E,0x2C,0x84};//0x94,0x2C,0x84
 
 /*****************485数据接收数组*****************/
 uint8_t RS485_RCV_DATA[12] = {0};
@@ -82,34 +84,42 @@ time			2016.09.30
 int main(void)
 {
 	uint8_t result[5] = {0};
-	/*测试使用
-	uint8_t *test = getVehicle_Number_List();
+	/************测试使用
+	uint8_t index = 0;	
+	uint8_t *test = getVehicle_Number_List(index);
 	RS485_Data_Rcv(test,RS485_RCV_DATA);
-	FLAG_REPERTORY |= DEAL_485;*/  
+	FLAG_REPERTORY |= DEAL_485; 
+	FLAG_REPERTORY |= DEAL_WG;
+	**************/ 
 	
 	System_Initializes();
 	
-	USART_Printf((uint8_t*)"Initialize Successful\r\n");		//初始化完成，供测试使用
+	USART_Printf((uint8_t*)"Initialize Successful\r\n");
 	RS485_RECV_OPEN; 	//开启485接收通道
 	RS485_SEND_OPEN;	//开启485发送通道
-	LedBlink(3);																	//初始化完成后，灯闪三下，亮灭各0.5s
+	LedBlink(3);			//初始化完成后，灯闪三下，亮灭各0.25s
 	
 	while(1)
   {
+		
 		switch(FLAG_REPERTORY)
 		{
 			case FREE:
-				Soft_delay_ms(10);												//空闲状态加入延时，防止mcu长期空闲运行
+				//Soft_delay_ms(10);												//空闲状态加入延时，防止mcu长期空闲运行
 				break;
 			case DEAL_485:
+				RS485_SendData(RS485_RCV_DATA,12);								//使用USART2发送485数据，
+				//USART_Send(USART1,RS485_RCV_DATA);
 				Deal_485_Data(RS485_RCV_DATA,result);
-				//RS485_SendData(RS485_RCV_DATA);
 				Soft_delay_ms(250);												//延时250ms，设备识别两个韦根信号的间距至少250ms
+				//FLAG_REPERTORY |= DEAL_WG;
 				break;
 			case DEAL_WG:
+				//RS485_SendData(WG_RCV_DATA,3);
+				//USART_Printf(WG_RCV_DATA);	//测试使用，判断韦根是否正常输出
 				Deal_WG_Data(WG_RCV_DATA);
-				//USART_Printf((uint8_t*)"WG debug\r\n");	//测试使用，判断韦根是否正常输出
-				Soft_delay_ms(250);
+				Soft_delay_ms(1000);
+				//FLAG_REPERTORY |= DEAL_WG; 
 				break;
 			case BOTH:
 				if(Deal_485_Data(RS485_RCV_DATA,result))
@@ -131,6 +141,13 @@ int main(void)
 			USART_Printf((uint8_t*)"WG length too short");
 			FLAG_EXTI &= ~TOO_SHORT;
 		}
+		/*************测试使用
+		index++;
+		if(index == 3)
+			index = 0;
+		test = getVehicle_Number_List(index);
+		RS485_Data_Rcv(test,RS485_RCV_DATA);
+		***************/
   }
 }
 
@@ -150,22 +167,22 @@ uint8_t Deal_WG_Data(uint8_t *WG_Data)
 	uint8_t i = 0;
 	if(WG_Data == NULL)
 		return 0 ;
+	WiegandUse->SendData(WG_Data,WIEGAND26);
+	//USART_Printf(WG_RCV_DATA);	
+	FLAG_REPERTORY &= ~DEAL_WG;
 	
-		FLAG_REPERTORY &= ~DEAL_WG;
-		if(FLAG_WG_CACHE == OCCUPIED)			//处理完当前韦根后，立即查询缓存标志位，提高处理效率
-		{
-			WiegandUse->ReceiveData(WG_temp_buf,WG_RCV_DATA);
-			FLAG_WG_CACHE = FREE;
-			FLAG_REPERTORY |= DEAL_WG;
-		}
-		if((FLAG_REPERTORY & DEAL_485) == FREE && FLAG_485_CACHE == OCCUPIED)
-		{																	
-			FLAG_485_CACHE = FREE;
-			FLAG_DATA = FREE;
-			FLAG_REPERTORY |= DEAL_485;
-		}
-		WiegandUse->SendData(WG_Data,WIEGAND26);
+	if(FLAG_WG_CACHE == OCCUPIED)			//处理完当前韦根后，立即查询缓存标志位，提高处理效率
+	{
+		WiegandUse->ReceiveData(WG_temp_buf,WG_RCV_DATA);
 		FLAG_WG_CACHE = FREE;
+		FLAG_REPERTORY |= DEAL_WG;
+	}
+	if((FLAG_REPERTORY & DEAL_485) == FREE && FLAG_485_CACHE == OCCUPIED)
+	{										
+		FLAG_485_CACHE = FREE;
+		FLAG_DATA = FREE;
+		FLAG_REPERTORY |= DEAL_485;
+	}
 }
 
 /************************************************
@@ -214,9 +231,18 @@ time				2016.09.30
 *************************************************/
 uint8_t Deal_485_Data(uint8_t *input,uint8_t *result)
 {
+	uint8_t ret = 0;
 	if(dealCarNumber(input,result))
 	{
-		FLAG_REPERTORY &= ~DEAL_485;
+		//USART_Printf(result);
+		WiegandUse->SendData(result,WIEGAND42);
+		ret = 1;
+	}
+	else
+	{ 
+		ret = 0;
+	}
+	FLAG_REPERTORY &= ~DEAL_485;
 		if(FLAG_485_CACHE == OCCUPIED)		//处理完485数据后，立即去查询485缓存标志位，提高处理效率
 		{
 			RS485_Data_Rcv(RS485_Rcv_temp,RS485_RCV_DATA);
@@ -229,17 +255,7 @@ uint8_t Deal_485_Data(uint8_t *input,uint8_t *result)
 			FLAG_WG_CACHE = FREE;
 			FLAG_REPERTORY |= DEAL_WG;
 		}
-			//USART_Printf(result);
-		WiegandUse->SendData(result,WIEGAND42);
-		RS485_SendData(RS485_RCV_DATA);								//使用USART2发送485数据，
-			//Send_Wiegand34(result);
-		return 1;
-	}
-	else
-	{ 
-		/**/
-		return 0;
-	}
+		return ret;
 }
 
 /************************************************

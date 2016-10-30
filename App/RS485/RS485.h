@@ -21,7 +21,7 @@
 
 void UART_485_Configuration(void);
 uint8_t RS485_Check(uint8_t *input);
-void RS485_SendData(uint8_t *send);
+void RS485_SendData(uint8_t *send,uint8_t length); 
 /**********************DMA使用******************************
 void RS485_DMA_Init(void);
 void RS485_DMA_RcvData(uint8_t *USART1_RxBuffer);							

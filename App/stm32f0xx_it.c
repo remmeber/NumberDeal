@@ -139,11 +139,21 @@ void USART1_IRQHandler(void)
 	}
 	if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET){
 		
-		if(FLAG_485_CACHE == OCCUPIED)
+		if(FLAG_485_CACHE == OCCUPIED){
+			USART_ReceiveData(USART1);
+			USART_ClearITPendingBit(USART1, USART_IT_RXNE);
 			return;
+		}	
 		temp = USART_ReceiveData(USART1)&0xff;
-		if(FLAG_DATA == FREE && temp == 'B' )
-			FLAG_DATA = DATA_COMING;
+		if(FLAG_DATA == FREE){
+			if(temp == 'B' ){
+				FLAG_DATA = DATA_COMING;
+				count=0;
+			}else{
+				USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+				return;
+			}
+		}
 		RS485_Rcv_temp[count] = temp;
 		count++;
 		if(count==12)//
@@ -156,10 +166,9 @@ void USART1_IRQHandler(void)
 				FLAG_REPERTORY |= DEAL_485;
 			}
 			else FLAG_485_CACHE = OCCUPIED;
-			//USART_Printf(RS485_RCV_DATA);
-			USART_ClearITPendingBit(USART1, USART_IT_RXNE);
-			
-	}
+			//USART_Printf(RS485_RCV_DATA);	
+		}
+		USART_ClearITPendingBit(USART1, USART_IT_RXNE);	
   }
 }
 
@@ -176,11 +185,13 @@ time				:2016.09.30
 
 void EXTI4_15_IRQHandler(void)
 {
-	if(FLAG_WG_CACHE == OCCUPIED){
-			return;
-	}
   if(EXTI_GetITStatus(WG_DATA0_EXIT_LINE) != RESET) //???????EXTI Line??
 	{
+		
+	if(FLAG_WG_CACHE == OCCUPIED){
+		EXTI_ClearITPendingBit(WG_DATA0_EXIT_LINE);
+			return;
+	}
 		FLAG_EXTI = RESET;//清除外部中断超时标志位，只要重新中断，就把中断检测标志位清0，进入下一间隔的检测
 		
 		if(tim_free_cnt>0)//???????????,?????????
@@ -196,9 +207,9 @@ void EXTI4_15_IRQHandler(void)
 			{
 				SYSTICK_Delay_Flag = 1;
 				SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //???????  //10us????
-				//SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;  //???????  //10us????
 			}
 			SYSTICK_Delay_Flag = 0;
+			//SysTick->CTRL &= ~ SysTick_CTRL_ENABLE_Msk;  //跇視謳瞻吱时欠
 			
 			//SysTick->CTRL &= ~ SysTick_CTRL_ENABLE_Msk;  //???????
 
@@ -221,6 +232,10 @@ void EXTI4_15_IRQHandler(void)
 		EXTI_ClearITPendingBit(WG_DATA0_EXIT_LINE);     //???????
 	}else	if(EXTI_GetITStatus(WG_DATA1_EXIT_LINE) != RESET)
 	{
+	if(FLAG_WG_CACHE == OCCUPIED){
+		EXTI_ClearITPendingBit(WG_DATA1_EXIT_LINE);
+			return;
+	}
 		
 		if(!FLAG_CHECK_FREE)
 			FLAG_CHECK_FREE = 1;//打开中断空闲检测
@@ -258,10 +273,12 @@ void EXTI4_15_IRQHandler(void)
 	if(WG_cnt > WIEGAND26)
 	{
 		SysTick->CTRL &= ~ SysTick_CTRL_ENABLE_Msk;  //关闭滴答定时器
-		if((FLAG_REPERTORY & DEAL_WG) == FREE && WiegandUse->ReceiveData(WG_temp_buf,WG_RCV_DATA))
+		if((FLAG_REPERTORY & DEAL_WG) == FREE )
 		{
+			if(WiegandUse->ReceiveData(WG_temp_buf,WG_RCV_DATA)){
+				FLAG_REPERTORY |= DEAL_WG;
+			}
 			FLAG_WG_CACHE = FREE;
-			FLAG_REPERTORY |= DEAL_WG;
 		}else FLAG_WG_CACHE = OCCUPIED;
 		WG_temp_buf = 0;
 		WG_cnt = 0;

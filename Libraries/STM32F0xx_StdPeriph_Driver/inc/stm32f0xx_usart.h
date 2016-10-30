@@ -544,7 +544,7 @@ void USART_AutoBaudRateConfig(USART_TypeDef* USARTx, uint32_t USART_AutoBaudRate
 void USART_SendData(USART_TypeDef* USARTx, uint16_t Data);
 uint16_t USART_ReceiveData(USART_TypeDef* USARTx);
 void USART_Printf(uint8_t *String);
-void USART_Send(USART_TypeDef* USARTx,uint8_t *String);
+void USART_Send(USART_TypeDef* USARTx,uint8_t *String,uint8_t length);
 
 /* Multi-Processor Communication functions ************************************/
 void USART_SetAddress(USART_TypeDef* USARTx, uint8_t USART_Address);

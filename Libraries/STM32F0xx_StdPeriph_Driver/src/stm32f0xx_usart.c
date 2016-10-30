@@ -960,20 +960,21 @@ void USART_Printf(uint8_t *String)
 	while((*String) != '\0')
   {
     USART_SendData(USART1,*String);
+		while(USART_GetFlagStatus(USART1,USART_FLAG_TXE)==RESET){};
     String++;
   }
-	USART_SendData(USART1,0x0A);
+	//USART_SendData(USART1,0x0A);
 }
 
-void USART_Send(USART_TypeDef* USARTx,uint8_t *String)
+void USART_Send(USART_TypeDef* USARTx,uint8_t *String,uint8_t length)
 {
 	uint8_t i=0;
-	while(i<12)
+	while(i<length)
   {
     USART_SendData(USARTx,*String);		
 		while(USART_GetFlagStatus(USARTx,USART_FLAG_TXE)==RESET){};				//发送完后一定要清除发送标志位，否则只发两个字节；
     String++;
-			i++;
+		i++;
   }
 }
 
